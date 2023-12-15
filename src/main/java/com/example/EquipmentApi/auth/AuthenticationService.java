@@ -1,7 +1,7 @@
 package com.example.EquipmentApi.auth;
 
 import com.example.EquipmentApi.config.JwtService;
-import com.example.EquipmentApi.model.User;
+import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
