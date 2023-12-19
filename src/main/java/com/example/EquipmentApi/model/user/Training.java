@@ -1,4 +1,4 @@
-package com.example.EquipmentApi.model.employee;
+package com.example.EquipmentApi.model.user;
 
 import com.example.EquipmentApi.model.employee.Employee;
 import jakarta.persistence.*;
@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 
@@ -36,5 +37,9 @@ public class Training {
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
     private Set<Employee> employees;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

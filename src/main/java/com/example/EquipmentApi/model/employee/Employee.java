@@ -1,6 +1,7 @@
 package com.example.EquipmentApi.model.employee;
 
 import com.example.EquipmentApi.model.user.Equipment;
+import com.example.EquipmentApi.model.user.Training;
 import com.example.EquipmentApi.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;

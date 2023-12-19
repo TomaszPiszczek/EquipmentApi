@@ -1,7 +1,7 @@
 package com.example.EquipmentApi.model.user;
 
+import com.example.EquipmentApi.model.car.Car;
 import com.example.EquipmentApi.model.employee.Employee;
-import com.example.EquipmentApi.model.user.Equipment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -47,14 +47,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Equipment> tools;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Training> trainings;
+
 
     @OneToMany(mappedBy = "user")
     private Set<Employee> employees;
 
-    /*@OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<Car> cars;
 
-*/
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
