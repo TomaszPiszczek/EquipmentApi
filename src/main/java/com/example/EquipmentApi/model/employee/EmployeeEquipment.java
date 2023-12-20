@@ -3,6 +3,7 @@ package com.example.EquipmentApi.model.employee;
 import com.example.EquipmentApi.model.user.Equipment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +27,9 @@ public class EmployeeEquipment {
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime assignDate;
 
+    @Column(name = "in_use")
+    private boolean inUse;
+
     @ManyToOne()
     @JoinColumn(name = "employee_id")
     private Employee employee;
@@ -32,6 +37,7 @@ public class EmployeeEquipment {
     @ManyToOne()
     @JoinColumn(name = "equipment_id")
     private Equipment equipment;
+
 
 
 }

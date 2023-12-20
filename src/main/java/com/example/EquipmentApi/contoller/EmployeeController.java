@@ -39,18 +39,17 @@ public class EmployeeController {
         employeeService.addEmployee(user,name,surname);
         return ResponseEntity.ok("Employee added");
     }
-    //todo add USER for employee leak protection
     @PostMapping("/signEmployeeToTraining")
-    public ResponseEntity<String> signEmployeeToTraining(User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainigDate, LocalDateTime expireDate){
+    public ResponseEntity<String> signEmployeeToTraining(@AuthenticationPrincipal User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 
-        trainingService.signEmployeeToTraining(user,employeeUUID,trainingUUID,trainigDate,expireDate);
+        trainingService.signEmployeeToTraining(user,employeeUUID,trainingUUID,trainingDate,expireDate);
         return ResponseEntity.ok("Employee signed to new training");
     }
 
     @PostMapping("/signEmployeesToTraining")
-    public ResponseEntity<String> signEmployeesToTraining(User user,Set<UUID> employeeUUID, UUID trainingUUID, LocalDateTime trainigDate, LocalDateTime expireDate){
+    public ResponseEntity<String> signEmployeesToTraining(@AuthenticationPrincipal User user,Set<UUID> employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 
-        trainingService.signEmployeesToTraining(employeeUUID,trainingUUID,trainigDate,expireDate);
+        trainingService.signEmployeesToTraining(user,employeeUUID,trainingUUID,trainingDate,expireDate);
         return ResponseEntity.ok("Employee signed to new training");
     }
 
