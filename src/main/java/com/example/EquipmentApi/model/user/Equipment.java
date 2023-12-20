@@ -30,6 +30,9 @@ public class Equipment {
     @Column(name = "description")
     private String  description;
 
+    @Column(name = "image")
+    private byte[] imageData;
+
     @ManyToMany(
             cascade = {CascadeType.MERGE,CascadeType.MERGE}
     )
