@@ -20,7 +20,7 @@ public class Equipment {
     @Column(name = "equipment_id")
     private UUID equipmentId;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     @NonNull
     private String name;
 

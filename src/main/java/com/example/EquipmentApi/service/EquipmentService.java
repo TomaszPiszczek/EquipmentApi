@@ -1,6 +1,7 @@
 package com.example.EquipmentApi.service;
 
 import com.example.EquipmentApi.dto.EmployeeEquipmentDTO;
+import com.example.EquipmentApi.dto.EquipmentDTO;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.user.Equipment;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -43,8 +46,17 @@ public class EquipmentService {
 
     }
 
-    public List<Equipment> getEquipment(User user) {
-        return equipmentRepository.findAllByUser(user);
+    public Set<EquipmentDTO> getEquipment(User user) {
+        Set<Equipment> equipment = equipmentRepository.findAllByUser(user);
+         return equipment.stream().map(
+                equipment1 ->
+                        EquipmentDTO.builder()
+                                .image(equipment1.getImageData())
+                                .name(equipment1.getName())
+                                .description(equipment1.getDescription())
+                                .uuid(equipment1.getEquipmentId())
+                                .build()
+                ).collect(Collectors.toSet());
     }
         //todo POSTMAN TEST
     public List<EmployeeEquipmentDTO> getEmployeeEquipment(User user, UUID employeeUUID) {
@@ -81,5 +93,9 @@ public class EquipmentService {
 
         employeeEquipmentRepository.save(employeeEquipment);
 
+    }
+    @Transactional
+    public void signEmployeesEquipment(User user, Set<UUID> employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
+        employeeUUID.forEach(uuid -> signEmployeeEquipment(user,uuid,equipmentUUID,assignDate));
     }
 }

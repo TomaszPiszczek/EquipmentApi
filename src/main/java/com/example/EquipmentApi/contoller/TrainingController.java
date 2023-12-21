@@ -1,5 +1,6 @@
 package com.example.EquipmentApi.contoller;
 
+import com.example.EquipmentApi.dto.TrainingDTO;
 import com.example.EquipmentApi.model.user.Training;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.service.TrainingService;
@@ -30,8 +31,8 @@ public class TrainingController {
     }
 
     @GetMapping("/getTrainings")
-    public ResponseEntity<List<Training>> removeTraining(@AuthenticationPrincipal User user){
-       return ResponseEntity.ok( trainingService.getTrainings(user));
+    public ResponseEntity<List<TrainingDTO>> removeTraining(@AuthenticationPrincipal User user){
+       return ResponseEntity.ok(trainingService.getTrainings(user));
     }
 
 

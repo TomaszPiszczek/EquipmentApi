@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface TrainingRepository extends JpaRepository<Training, UUID> {
-    Optional<Training> getTrainingByTrainingIdAndUser(UUID uuid,User user);
+    Optional<Training> findTrainingByTrainingIdAndUser(UUID uuid, User user);
     List<Training> getTrainingByUser(User user);
 }

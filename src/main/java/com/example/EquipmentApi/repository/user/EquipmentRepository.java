@@ -7,11 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment, UUID> {
     Optional<Equipment> findEquipmentByEquipmentIdAndUser(UUID equipmentUUID, User user);
-    List<Equipment> findAllByUser(User user);
+    Set<Equipment> findAllByUser(User user);
 
 }

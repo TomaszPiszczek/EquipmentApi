@@ -1,7 +1,7 @@
 package com.example.EquipmentApi.contoller;
 
 import com.example.EquipmentApi.dto.EmployeeEquipmentDTO;
-import com.example.EquipmentApi.model.user.Equipment;
+import com.example.EquipmentApi.dto.EquipmentDTO;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.service.EquipmentService;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -33,7 +34,7 @@ public class EquipmentController {
     }
 
     @GetMapping("/getEquipment")
-    public ResponseEntity<List<Equipment>> getEquipment(@AuthenticationPrincipal User user) {
+    public ResponseEntity<Set<EquipmentDTO>> getEquipment(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(equipmentService.getEquipment(user));
 
     }
@@ -50,6 +51,13 @@ public class EquipmentController {
         return ResponseEntity.ok("Equipment signed to employee");
 
     }
+
+    @PostMapping("/signEquipmentToEmployees")
+    public ResponseEntity<String> signEmployeesToEquipment(@AuthenticationPrincipal User user,@RequestBody Set<UUID> employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
+        equipmentService.signEmployeesEquipment(user, employeeUUID,equipmentUUID,assignDate);
+        return ResponseEntity.ok("Equipment signed to employee");
+
+    }
     @DeleteMapping("/removeEquipmentFromEmployee")
     public ResponseEntity<String> removeEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID,UUID employeeUUID) {
         equipmentService.removeEquipmentFromEmployee(user,employeeEquipmentUUID,employeeUUID);
@@ -60,6 +68,5 @@ public class EquipmentController {
         equipmentService.unSetEquipmentFromEmployee(user,employeeEquipmentUUID,employeeUUID) ;
         return ResponseEntity.ok("Equipment un set from employee");
     }
-
 
 }

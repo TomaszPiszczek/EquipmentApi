@@ -1,5 +1,6 @@
 package com.example.EquipmentApi.service;
 
+import com.example.EquipmentApi.dto.TrainingDTO;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import com.example.EquipmentApi.model.user.Training;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -63,12 +65,18 @@ public class TrainingService {
     @Transactional
     public void signEmployeeToTraining(User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate) {
         Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        Training training = trainingRepository.findTrainingByTrainingIdAndUser(trainingUUID,user).orElseThrow(() -> new EntityNotFoundException("Training not found"));
+
+
+        if (employeeTrainingRepository.existsByEmployeeAndTraining(employee, training)) {
+            throw new IllegalStateException("Employee is already signed up for this training");
+        }
 
         EmployeeTraining employeeTraining = EmployeeTraining.builder()
                 .employee(employee)
                 .trainingDate(trainingDate)
                 .trainingExpireDate(expireDate)
-                .employeeTrainingId(trainingUUID)
+                .training(training)
                 .build();
         employeeTrainingRepository.save(employeeTraining);
     }
@@ -78,11 +86,21 @@ public class TrainingService {
     }
 
     public void removeTraining(User user,UUID trainingUUID) {
-        Training training = trainingRepository.getTrainingByTrainingIdAndUser(trainingUUID,user).orElseThrow(() -> new EntityNotFoundException("Training not found"));
+        Training training = trainingRepository.findTrainingByTrainingIdAndUser(trainingUUID,user).orElseThrow(() -> new EntityNotFoundException("Training not found"));
         trainingRepository.delete(training);
     }
 
-    public List<Training> getTrainings(User user) {
-        return trainingRepository.getTrainingByUser(user);
+    public List<TrainingDTO> getTrainings(User user) {
+        List<Training> trainings =  trainingRepository.getTrainingByUser(user);
+
+        return trainings.stream().map(
+                training ->
+                        TrainingDTO
+                                .builder()
+                                .uuid(training.getTrainingId())
+                                .description(training.getDescription())
+                                .name(training.getName())
+                                .build()
+        ).collect(Collectors.toList());
     }
 }

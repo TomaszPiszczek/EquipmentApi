@@ -20,7 +20,7 @@ public class Training {
     @Column(name = "training_id")
     private UUID trainingId;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     @NonNull
     private String name;
 

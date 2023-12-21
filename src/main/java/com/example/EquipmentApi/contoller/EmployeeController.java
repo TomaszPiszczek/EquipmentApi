@@ -9,10 +9,7 @@ import com.example.EquipmentApi.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,7 +27,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeDTO(user));
     }
 
-    @GetMapping("/getEmployeeService")
+    @GetMapping("/getEmployeeTrainings")
     ResponseEntity<Set<EmployeeTrainingDTO>> getEmployeeService(@AuthenticationPrincipal User user, UUID EmployeeUUID) {
         return ResponseEntity.ok(employeeService.getEmployeeTrainingDTO(EmployeeUUID,user));
     }
@@ -47,7 +44,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/signEmployeesToTraining")
-    public ResponseEntity<String> signEmployeesToTraining(@AuthenticationPrincipal User user,Set<UUID> employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
+    public ResponseEntity<String> signEmployeesToTraining(@AuthenticationPrincipal User user, @RequestBody Set<UUID> employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 
         trainingService.signEmployeesToTraining(user,employeeUUID,trainingUUID,trainingDate,expireDate);
         return ResponseEntity.ok("Employee signed to new training");
