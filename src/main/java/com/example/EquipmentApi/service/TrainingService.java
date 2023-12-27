@@ -65,7 +65,7 @@ public class TrainingService {
         trainingRepository.delete(training);
     }
 
-    
+
     public List<TrainingDTO> getTrainings(User user) {
         List<Training> trainings =  trainingRepository.getTrainingByUser(user);
 

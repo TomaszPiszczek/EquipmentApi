@@ -37,7 +37,6 @@ public class EmployeeService {
                 ).collect(Collectors.toSet());
 
     }
-        //todo tests
     public Set<EmployeeTrainingDTO> getEmployeeTrainingDTO(UUID uuid,User user) {
         Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(uuid,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
 

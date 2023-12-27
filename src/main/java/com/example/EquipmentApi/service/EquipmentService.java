@@ -60,7 +60,6 @@ public class EquipmentService {
                                 .build()
                 ).collect(Collectors.toSet());
     }
-        //todo POSTMAN TEST
     public List<EmployeeEquipmentDTO> getEmployeeEquipment(User user, UUID employeeUUID) {
         return employeeEquipmentRepository.getEmployeeEquipmentDTOList(employeeUUID,user.getId());
     }

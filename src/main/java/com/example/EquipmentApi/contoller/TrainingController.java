@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/training")
 public class TrainingController {
     TrainingService trainingService;
-        //todo modify
     @PostMapping("/createTraining")
     public ResponseEntity<String> createTraining(String name, String description,@AuthenticationPrincipal User user){
         trainingService.createTraining(name,description,user);
