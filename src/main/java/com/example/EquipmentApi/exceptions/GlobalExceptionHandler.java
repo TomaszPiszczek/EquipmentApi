@@ -15,7 +15,6 @@ import java.sql.SQLException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    //todo exception handler for illegalStateEx
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> handleValidationExceptions(ConstraintViolationException ex) {
@@ -55,6 +54,13 @@ public class GlobalExceptionHandler {
         response.setErrorMessage(ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ExceptionResponse> handleIllegalStateException(IllegalStateException ex) {
+        ExceptionResponse response = new ExceptionResponse();
+        response.setErrorCode("ILLEGAL_STATE");
+        response.setErrorMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
 }
