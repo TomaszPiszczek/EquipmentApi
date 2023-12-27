@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.sql.SQLException;
+
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
+    //todo exception handler for illegalStateEx
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> handleValidationExceptions(ConstraintViolationException ex) {
@@ -27,6 +30,19 @@ public class GlobalExceptionHandler {
 
         response.setErrorCode("BAD_REQUEST");
         response.setErrorMessage(errorMessage.toString());
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponse> handlePSQLExceptions(SQLException ex) {
+        ExceptionResponse response = new ExceptionResponse();
+
+        String errorMessage = "Duplicate key violation: " + ex.getMessage();
+
+        response.setErrorCode("BAD_REQUEST");
+        response.setErrorMessage(errorMessage);
 
         return ResponseEntity.badRequest().body(response);
     }

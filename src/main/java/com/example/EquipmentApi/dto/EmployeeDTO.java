@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Builder
 public record EmployeeDTO(
+        UUID uuid,
         String name,
-        String surname,
-        UUID uuid
+        String surname
 ) {
 
 }

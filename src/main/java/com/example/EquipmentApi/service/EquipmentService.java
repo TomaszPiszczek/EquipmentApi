@@ -24,9 +24,10 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EquipmentService {
-    EquipmentRepository equipmentRepository;
-    EmployeeRepository employeeRepository;
-    EmployeeEquipmentRepository employeeEquipmentRepository;
+    private final EquipmentRepository equipmentRepository;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeEquipmentRepository employeeEquipmentRepository;
+    //fixme 2
     @Transactional
     public void createEquipment(byte[] image,BigDecimal price, String name, String description, User user) {
         Equipment equipment = Equipment.builder()
@@ -45,6 +46,7 @@ public class EquipmentService {
         equipmentRepository.delete(equipment);
 
     }
+
 
     public Set<EquipmentDTO> getEquipment(User user) {
         Set<Equipment> equipment = equipmentRepository.findAllByUser(user);

@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class EmployeeService {
-    EmployeeRepository employeeRepository;
-    EmployeeTrainingRepository employeeTrainingRepository;
-    TrainingRepository trainingRepository;
+   private final   EmployeeRepository employeeRepository;
+   private final EmployeeTrainingRepository employeeTrainingRepository;
+   private final TrainingRepository trainingRepository;
 
     public Set<EmployeeDTO> getEmployeeDTO(User user){
         return employeeRepository.findEmployeesByUser(user)

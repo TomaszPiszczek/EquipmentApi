@@ -13,26 +13,30 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeEquipmentRepository extends JpaRepository<EmployeeEquipment, UUID> {
-    @Query(value = """
-            SELECT
+    @Query("""
+        SELECT
+        new com.example.EquipmentApi.dto.EmployeeEquipmentDTO(
             e.name,
             e.description,
-            e.image,
-            ee.date AS assignDate,
-            ee.in_use AS inUse
-            FROM
-            public.equipment e
-            JOIN
-            public.employee_equipment ee ON e.equipment_id = ee.equipment_id
-            JOIN
-            public.employee em ON ee.employee_id = em.employee_id
-            JOIN
-            public.user_account ua ON e.user_id = ua.user_id
-            WHERE
-            em.employee_id = :employeeUUID
-            AND ua.user_id = :userUUID
-            """,nativeQuery = true)
-    List<EmployeeEquipmentDTO> getEmployeeEquipmentDTOList(UUID employeeUUID,UUID userUUID);
+            e.imageData,
+            ee.assignDate,
+            ee.inUse
+            
+        )
+        FROM
+        Equipment e
+        JOIN
+        EmployeeEquipment ee ON e.equipmentId = ee.equipment.equipmentId
+        JOIN
+        Employee em ON ee.employee.employeeId = em.employeeId
+        JOIN
+        User ua ON e.user.id = ua.id
+        WHERE
+        em.employeeId = :employeeUUID
+        AND ua.id= :userUUID
+        """)
+
+    List<EmployeeEquipmentDTO> getEmployeeEquipmentDTOList(UUID employeeUUID, UUID userUUID);
 
     Optional<EmployeeEquipment> findEmployeeEquipmentByAssignIdAndEmployee(UUID assignId, Employee employee);
 
