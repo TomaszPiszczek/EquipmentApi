@@ -1,6 +1,5 @@
 package com.example.EquipmentApi.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("api/v1/auth/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("api/v1/auth/**","/swagger-ui/**","/v3/**","/v3/api-docs").permitAll().anyRequest().authenticated())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -30,4 +29,5 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
 
         return http.build();
     }
+
 }
