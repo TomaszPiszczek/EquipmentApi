@@ -36,7 +36,7 @@ public class Employee {
     @ManyToMany(mappedBy = "employees")
     private Set<Equipment> tools;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REMOVE)
     private Set<Training> trainings;
 
 

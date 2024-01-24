@@ -5,7 +5,7 @@ import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
-import com.example.EquipmentApi.repository.employee.TrainingRepository;
+import com.example.EquipmentApi.repository.user.EquipmentRepository;
 import com.example.EquipmentApi.repository.user.UserRepository;
 import com.example.EquipmentApi.service.EmployeeService;
 import jakarta.transaction.Transactional;
@@ -31,16 +31,17 @@ public class EmployeeServiceTest {
     @Mock
     EmployeeRepository employeeRepository;
     @Mock
-    TrainingRepository trainingRepository;
+    EquipmentRepository equipmentRepository;
     @Mock
     EmployeeTrainingRepository employeeTrainingRepository;
     @Autowired
     UserRepository userRepository;
 
     EmployeeService employeeService;
+
     @BeforeEach
     public void setUp(){
-        employeeService =  new EmployeeService(employeeRepository, employeeTrainingRepository, trainingRepository);
+        employeeService =  new EmployeeService(employeeRepository, employeeTrainingRepository,equipmentRepository);
     }
 
     @Transactional
@@ -68,7 +69,7 @@ public class EmployeeServiceTest {
         assertEquals(2,employeeDTOSet.size());
         assertEquals("name",EmployeeDTO.name());
         assertEquals("surname",EmployeeDTO.surname());
-        assertEquals(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120002"),EmployeeDTO.uuid());
+        assertEquals(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120003"),EmployeeDTO.uuid());
 
 
     }

@@ -1,16 +1,26 @@
 package com.example.EquipmentApi.dto;
 
 import com.example.EquipmentApi.model.employee.Employee;
+import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
-
 
 @Builder
 public record EmployeeDTO(
         UUID uuid,
         String name,
-        String surname
+        String surname,
+        long daysToTraining,
+        long numberOfTools
 ) {
+
+    public static long calculateDaysToTraining(EmployeeTraining employeeTraining) {
+        LocalDateTime trainingExpireDate = employeeTraining.getTrainingExpireDate();
+        LocalDateTime currentDate = LocalDateTime.now();
+        return java.time.temporal.ChronoUnit.DAYS.between(currentDate, trainingExpireDate);
+    }
+
 
 }

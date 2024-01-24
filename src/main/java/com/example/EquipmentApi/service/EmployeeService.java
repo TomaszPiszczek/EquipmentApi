@@ -7,7 +7,7 @@ import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
-import com.example.EquipmentApi.repository.employee.TrainingRepository;
+import com.example.EquipmentApi.repository.user.EquipmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -17,25 +17,38 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.example.EquipmentApi.dto.EmployeeDTO.calculateDaysToTraining;
+
 @Service
 @AllArgsConstructor
 public class EmployeeService {
    private final   EmployeeRepository employeeRepository;
    private final EmployeeTrainingRepository employeeTrainingRepository;
-   private final TrainingRepository trainingRepository;
+   private final EquipmentRepository equipmentRepository;
 
-    public Set<EmployeeDTO> getEmployeeDTO(User user){
+    public Set<EmployeeDTO> getEmployeeDTO(User user) {
         return employeeRepository.findEmployeesByUser(user)
                 .stream()
-                .map(
-                        employee -> EmployeeDTO
-                                .builder()
-                                .name(employee.getName())
-                                .surname(employee.getSurname())
-                                .uuid(employee.getEmployeeId())
-                                .build()
-                ).collect(Collectors.toSet());
+                .map(employee -> {
+                    EmployeeTraining employeeTraining = employeeTrainingRepository.findFirstByEmployeeEmployeeIdOrderByTrainingExpireDateAsc(employee.getEmployeeId());
+                    long equipmentCount = equipmentRepository.countToolsForEmployee(employee.getEmployeeId());
 
+                    long daysToTraining;
+                    if(employeeTraining == null) {
+                         daysToTraining = -99999;
+                    }else{
+                         daysToTraining = calculateDaysToTraining(employeeTraining);
+
+                    }
+                    return EmployeeDTO.builder()
+                            .uuid(employee.getEmployeeId())
+                            .name(employee.getName())
+                            .surname(employee.getSurname())
+                            .daysToTraining(daysToTraining)
+                            .numberOfTools(equipmentCount)
+                            .build();
+                })
+                .collect(Collectors.toSet());
     }
     public Set<EmployeeTrainingDTO> getEmployeeTrainingDTO(UUID uuid,User user) {
         Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(uuid,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
@@ -45,6 +58,7 @@ public class EmployeeService {
                 .stream()
                 .map(
                         employeeTraining -> EmployeeTrainingDTO.builder()
+                                .uuid(employeeTraining.getEmployeeTrainingId())
                                 .trainingDate(employeeTraining.getTrainingDate())
                                 .expireDate(employeeTraining.getTrainingExpireDate())
                                 .name(employee.getName())
@@ -65,5 +79,9 @@ public class EmployeeService {
                 .user(user)
                 .build();
         employeeRepository.save(employee);
+    }
+
+    public Employee getEmployee(User user, UUID employeeUUID) {
+        return employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
     }
 }

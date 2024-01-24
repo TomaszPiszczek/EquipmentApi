@@ -16,6 +16,7 @@ public interface EmployeeEquipmentRepository extends JpaRepository<EmployeeEquip
     @Query("""
         SELECT
         new com.example.EquipmentApi.dto.EmployeeEquipmentDTO(
+            ee.assignId,
             e.name,
             e.description,
             e.imageData,

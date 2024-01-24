@@ -59,8 +59,8 @@ public class EquipmentController {
 
     }
     @DeleteMapping("/removeEquipmentFromEmployee")
-    public ResponseEntity<String> removeEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID,UUID employeeUUID) {
-        equipmentService.removeEquipmentFromEmployee(user,employeeEquipmentUUID,employeeUUID);
+    public ResponseEntity<String> removeEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID) {
+        equipmentService.removeEquipmentFromEmployee(user,employeeEquipmentUUID);
         return ResponseEntity.ok("Equipment deleted from employee");
         }
     @PatchMapping("/unSetEquipmentFromEmployee")

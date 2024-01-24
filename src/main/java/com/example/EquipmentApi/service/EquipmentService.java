@@ -57,6 +57,7 @@ public class EquipmentService {
                                 .name(equipment1.getName())
                                 .description(equipment1.getDescription())
                                 .uuid(equipment1.getEquipmentId())
+                                .price(equipment1.getPrice())
                                 .build()
                 ).collect(Collectors.toSet());
     }
@@ -79,8 +80,8 @@ public class EquipmentService {
     }
 
     @Transactional
-    public void removeEquipmentFromEmployee(User user, UUID employeeEquipmentUUID, UUID employeeUUID) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+    public void removeEquipmentFromEmployee(User user, UUID employeeEquipmentUUID) {
+        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeEquipmentUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
         EmployeeEquipment employeeEquipment = employeeEquipmentRepository.findEmployeeEquipmentByAssignIdAndEmployee(employeeEquipmentUUID,employee).orElseThrow(() -> new EntityNotFoundException("Assign not found"));
 
         employeeEquipmentRepository.delete(employeeEquipment);

@@ -2,6 +2,7 @@ package com.example.EquipmentApi.contoller;
 
 import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
+import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.service.EmployeeService;
@@ -27,6 +28,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeDTO(user));
     }
 
+    @GetMapping("/getEmployee")
+    ResponseEntity<Employee> getEmployees(@AuthenticationPrincipal User user, UUID employeeUUID){
+        return ResponseEntity.ok(employeeService.getEmployee(user,employeeUUID));
+    }
     @GetMapping("/getEmployeeTrainings")
     ResponseEntity<Set<EmployeeTrainingDTO>> getEmployeeService(@AuthenticationPrincipal User user, UUID EmployeeUUID) {
         return ResponseEntity.ok(employeeService.getEmployeeTrainingDTO(EmployeeUUID,user));

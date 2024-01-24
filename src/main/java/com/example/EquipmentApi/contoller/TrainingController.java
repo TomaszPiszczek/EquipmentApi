@@ -23,14 +23,14 @@ public class TrainingController {
 
      return ResponseEntity.ok("Training created");
     }
-    @DeleteMapping("/removeTraining")
-    public ResponseEntity<String> removeTraining(UUID trainingUUID,@AuthenticationPrincipal User user){
-        trainingService.removeTraining(user,trainingUUID);
+    @DeleteMapping("/removeTrainingFromEmployee")
+    public ResponseEntity<String> removeTraining(UUID employeeTrainingUUID,@AuthenticationPrincipal User user){
+        trainingService.removeTraining(user,employeeTrainingUUID);
         return ResponseEntity.ok("Training removed");
     }
 
     @GetMapping("/getTrainings")
-    public ResponseEntity<List<TrainingDTO>> removeTraining(@AuthenticationPrincipal User user){
+    public ResponseEntity<List<TrainingDTO>> getTrainings(@AuthenticationPrincipal User user){
        return ResponseEntity.ok(trainingService.getTrainings(user));
     }
 

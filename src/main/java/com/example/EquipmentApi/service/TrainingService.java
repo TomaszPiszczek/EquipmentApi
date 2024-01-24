@@ -60,9 +60,12 @@ public class TrainingService {
     }
 
 
-    public void removeTraining(User user,UUID trainingUUID) {
-        Training training = trainingRepository.findTrainingByTrainingIdAndUser(trainingUUID,user).orElseThrow(() -> new EntityNotFoundException("Training not found"));
+    public void removeTraining(User user,UUID employeeTrainingUUID) {
+        EmployeeTraining employeeTraining = employeeTrainingRepository.findEmployeeTrainingByEmployeeTrainingId(employeeTrainingUUID).orElseThrow(()->new EntityNotFoundException("Training not found"));
+        Training training = employeeTraining.getTraining();
+        employeeTrainingRepository.delete(employeeTraining);
         trainingRepository.delete(training);
+
     }
 
 
