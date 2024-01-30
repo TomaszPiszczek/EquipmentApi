@@ -1,7 +1,6 @@
 package com.example.EquipmentApi.contoller;
 
 import com.example.EquipmentApi.dto.TrainingDTO;
-import com.example.EquipmentApi.model.user.Training;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.service.TrainingService;
 import lombok.AllArgsConstructor;
@@ -24,8 +23,13 @@ public class TrainingController {
      return ResponseEntity.ok("Training created");
     }
     @DeleteMapping("/removeTrainingFromEmployee")
-    public ResponseEntity<String> removeTraining(UUID employeeTrainingUUID,@AuthenticationPrincipal User user){
-        trainingService.removeTraining(user,employeeTrainingUUID);
+    public ResponseEntity<String> removeTrainingFromEmployee(UUID employeeTrainingUUID,@AuthenticationPrincipal User user){
+        trainingService.removeTrainingFromEmployee(user,employeeTrainingUUID);
+        return ResponseEntity.ok("Training removed");
+    }
+    @DeleteMapping("/removeTraining")
+    public ResponseEntity<String> removeTraining(UUID trainingUUID,@AuthenticationPrincipal User user){
+        trainingService.removeTraining(user,trainingUUID);
         return ResponseEntity.ok("Training removed");
     }
 

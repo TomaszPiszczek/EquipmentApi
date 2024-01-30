@@ -2,6 +2,7 @@ package com.example.EquipmentApi.contoller;
 
 import com.example.EquipmentApi.dto.EmployeeEquipmentDTO;
 import com.example.EquipmentApi.dto.EquipmentDTO;
+import com.example.EquipmentApi.dto.SignEquipmentRequest;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.service.EquipmentService;
 import lombok.AllArgsConstructor;
@@ -56,8 +57,20 @@ public class EquipmentController {
     public ResponseEntity<String> signEmployeesToEquipment(@AuthenticationPrincipal User user,@RequestBody Set<UUID> employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
         equipmentService.signEmployeesEquipment(user, employeeUUID,equipmentUUID,assignDate);
         return ResponseEntity.ok("Equipment signed to employee");
-
     }
+
+
+    @PostMapping("/signEquipmentsToEmployees")
+    public ResponseEntity<String> signEmployeesToEquipments(
+            @AuthenticationPrincipal User user,
+            @RequestBody SignEquipmentRequest request) {
+
+        equipmentService.signEmployeesEquipments(user, request.getEmployeeUUID(), request.getEquipmentUUID(), request.getAssignDate());
+
+        return ResponseEntity.ok("Equipment signed to employee");
+    }
+
+
     @DeleteMapping("/removeEquipmentFromEmployee")
     public ResponseEntity<String> removeEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID) {
         equipmentService.removeEquipmentFromEmployee(user,employeeEquipmentUUID);

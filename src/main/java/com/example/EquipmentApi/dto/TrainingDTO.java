@@ -7,7 +7,7 @@ import java.util.UUID;
 public record TrainingDTO(
         UUID uuid,
 
-        String name,
+        String trainingName,
         String description
 
 ) {

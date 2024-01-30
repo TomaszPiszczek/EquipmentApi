@@ -41,6 +41,12 @@ public class EmployeeController {
         employeeService.addEmployee(user,name,surname);
         return ResponseEntity.ok("Employee added");
     }
+
+    @DeleteMapping("/removeEmployee")
+    ResponseEntity<String> removeEmployee(@AuthenticationPrincipal User user, UUID employeeUUID){
+        employeeService.removeEmployee(user,employeeUUID);
+        return ResponseEntity.ok("Employee removed");
+    }
     @PostMapping("/signEmployeeToTraining")
     public ResponseEntity<String> signEmployeeToTraining(@AuthenticationPrincipal User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 

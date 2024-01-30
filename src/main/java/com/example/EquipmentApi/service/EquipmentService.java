@@ -64,20 +64,7 @@ public class EquipmentService {
     public List<EmployeeEquipmentDTO> getEmployeeEquipment(User user, UUID employeeUUID) {
         return employeeEquipmentRepository.getEmployeeEquipmentDTOList(employeeUUID,user.getId());
     }
-    @Transactional
-    public void signEmployeeEquipment(User user, UUID employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
-        Equipment equipment = equipmentRepository.findEquipmentByEquipmentIdAndUser(equipmentUUID,user).orElseThrow(() -> new EntityNotFoundException("Equipment not found"));
 
-        EmployeeEquipment employeeEquipment = EmployeeEquipment.builder()
-                .equipment(equipment)
-                .employee(employee)
-                .assignDate(assignDate)
-                .inUse(true)
-                .build();
-
-        employeeEquipmentRepository.save(employeeEquipment);
-    }
 
     @Transactional
     public void removeEquipmentFromEmployee(User user, UUID employeeEquipmentUUID) {
@@ -96,8 +83,30 @@ public class EquipmentService {
         employeeEquipmentRepository.save(employeeEquipment);
 
     }
+
+    @Transactional
+    public void signEmployeeEquipment(User user, UUID employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
+        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found") );
+        Equipment equipment = equipmentRepository.findEquipmentByEquipmentIdAndUser(equipmentUUID,user).orElseThrow(() -> new EntityNotFoundException("Equipment not found"));
+
+        EmployeeEquipment employeeEquipment = EmployeeEquipment.builder()
+                .equipment(equipment)
+                .employee(employee)
+                .assignDate(assignDate)
+                .inUse(true)
+                .build();
+
+        employeeEquipmentRepository.save(employeeEquipment);
+    }
     @Transactional
     public void signEmployeesEquipment(User user, Set<UUID> employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
         employeeUUID.forEach(uuid -> signEmployeeEquipment(user,uuid,equipmentUUID,assignDate));
     }
+    @Transactional
+    public void signEmployeesEquipments(User user, Set<UUID> employeeUUIDs, Set<UUID> equipmentUUIDs, LocalDateTime assignDate) {
+        for (UUID equipmentUUID : equipmentUUIDs) {
+            signEmployeesEquipment(user, employeeUUIDs, equipmentUUID, assignDate);
+        }
+    }
+
 }
