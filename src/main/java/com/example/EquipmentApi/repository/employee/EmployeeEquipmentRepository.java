@@ -3,6 +3,7 @@ package com.example.EquipmentApi.repository.employee;
 import com.example.EquipmentApi.dto.EmployeeEquipmentDTO;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
+import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,6 @@ public interface EmployeeEquipmentRepository extends JpaRepository<EmployeeEquip
     List<EmployeeEquipmentDTO> getEmployeeEquipmentDTOList(UUID employeeUUID, UUID userUUID);
 
     Optional<EmployeeEquipment> findEmployeeEquipmentByAssignIdAndEmployee(UUID assignId, Employee employee);
+    Optional<List<EmployeeEquipment>> findEmployeeEquipmentByEmployee(Employee employee);
 
 }

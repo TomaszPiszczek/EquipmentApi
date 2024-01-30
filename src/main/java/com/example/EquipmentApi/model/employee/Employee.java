@@ -40,6 +40,8 @@ public class Employee {
     private Set<Training> trainings;
 
 
+    @PreRemove
+    private void preRemove() {
 
-
+    }
 }

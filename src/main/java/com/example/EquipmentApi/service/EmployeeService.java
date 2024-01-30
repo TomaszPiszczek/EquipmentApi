@@ -3,8 +3,10 @@ package com.example.EquipmentApi.service;
 import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
 import com.example.EquipmentApi.model.employee.Employee;
+import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import com.example.EquipmentApi.model.user.User;
+import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
 import com.example.EquipmentApi.repository.user.EquipmentRepository;
@@ -13,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class EmployeeService {
    private final   EmployeeRepository employeeRepository;
    private final EmployeeTrainingRepository employeeTrainingRepository;
    private final EquipmentRepository equipmentRepository;
+   private final EmployeeEquipmentRepository employeeEquipmentRepository;
 
     public Set<EmployeeDTO> getEmployeeDTO(User user) {
         return employeeRepository.findEmployeesByUser(user)
@@ -83,5 +87,12 @@ public class EmployeeService {
 
     public Employee getEmployee(User user, UUID employeeUUID) {
         return employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+    }
+
+    public void removeEmployee(User user, UUID empoyeeUUID) {
+        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(empoyeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        List<EmployeeEquipment> employeeEquipment =   employeeEquipmentRepository.findEmployeeEquipmentByEmployee(employee).orElseThrow(() -> new EntityNotFoundException("relation not found"));
+        employeeEquipmentRepository.deleteAll(employeeEquipment);
+        employeeRepository.delete(employee);
     }
 }

@@ -60,7 +60,7 @@ public class TrainingService {
     }
 
 
-    public void removeTraining(User user,UUID employeeTrainingUUID) {
+    public void removeTrainingFromEmployee(User user, UUID employeeTrainingUUID) {
         EmployeeTraining employeeTraining = employeeTrainingRepository.findEmployeeTrainingByEmployeeTrainingId(employeeTrainingUUID).orElseThrow(()->new EntityNotFoundException("Training not found"));
         Training training = employeeTraining.getTraining();
         employeeTrainingRepository.delete(employeeTraining);
@@ -78,8 +78,13 @@ public class TrainingService {
                                 .builder()
                                 .uuid(training.getTrainingId())
                                 .description(training.getDescription())
-                                .name(training.getName())
+                                .trainingName(training.getName())
                                 .build()
         ).collect(Collectors.toList());
+    }
+
+    public void removeTraining(User user, UUID trainingUUID) {
+        Training training = trainingRepository.getTrainingByTrainingId(trainingUUID).orElseThrow(()->new EntityNotFoundException("Training not found"));
+        trainingRepository.delete(training);
     }
 }
