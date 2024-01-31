@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,6 +30,8 @@ public class Equipment {
 
     @Column(name = "description")
     private String  description;
+    @Column(name = "service_date")
+    private LocalDateTime serviceDate;
 
     @Column(name = "image")
     private byte[] imageData;

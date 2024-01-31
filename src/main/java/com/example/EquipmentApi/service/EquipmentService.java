@@ -27,15 +27,16 @@ public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
     private final EmployeeRepository employeeRepository;
     private final EmployeeEquipmentRepository employeeEquipmentRepository;
-    //fixme 2
+
     @Transactional
-    public void createEquipment(byte[] image,BigDecimal price, String name, String description, User user) {
+    public void createEquipment(byte[] image,BigDecimal price, String name, String description,LocalDateTime serviceDate, User user) {
         Equipment equipment = Equipment.builder()
                 .price(price)
                 .description(description)
                 .user(user)
                 .name(name)
                 .imageData(image)
+                .serviceDate(serviceDate)
                 .build();
         equipmentRepository.save(equipment);
     }
@@ -47,6 +48,15 @@ public class EquipmentService {
 
     }
 
+    @Transactional
+    public void changeDate(UUID equipmentUUID, LocalDateTime newDate,User user) {
+        Equipment equipment = equipmentRepository.findEquipmentByEquipmentIdAndUser(equipmentUUID,user)
+                .orElseThrow(() -> new EntityNotFoundException("Equipment not found"));
+
+        equipment.setServiceDate(newDate);
+        equipmentRepository.save(equipment);
+
+    }
 
     public Set<EquipmentDTO> getEquipment(User user) {
         Set<Equipment> equipment = equipmentRepository.findAllByUser(user);
@@ -58,6 +68,7 @@ public class EquipmentService {
                                 .description(equipment1.getDescription())
                                 .uuid(equipment1.getEquipmentId())
                                 .price(equipment1.getPrice())
+                                .serviceDate(equipment1.getServiceDate())
                                 .build()
                 ).collect(Collectors.toSet());
     }
@@ -68,8 +79,7 @@ public class EquipmentService {
 
     @Transactional
     public void removeEquipmentFromEmployee(User user, UUID employeeEquipmentUUID) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeEquipmentUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
-        EmployeeEquipment employeeEquipment = employeeEquipmentRepository.findEmployeeEquipmentByAssignIdAndEmployee(employeeEquipmentUUID,employee).orElseThrow(() -> new EntityNotFoundException("Assign not found"));
+        EmployeeEquipment employeeEquipment = employeeEquipmentRepository.findEmployeeEquipmentByAssignId(employeeEquipmentUUID).orElseThrow(() -> new EntityNotFoundException("Relation between equipment and employee not found"));
 
         employeeEquipmentRepository.delete(employeeEquipment);
     }
