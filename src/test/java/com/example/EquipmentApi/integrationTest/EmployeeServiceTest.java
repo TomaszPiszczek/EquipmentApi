@@ -49,12 +49,12 @@ public class EmployeeServiceTest {
     public void getEmployeeDTOShouldReturnDtoTest(){
         //given
         Employee employee1 = Employee.builder()
-                .name("name")
+                .name("trainingName")
                 .employeeId(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120002"))
                 .surname("surname")
                 .build();
         Employee employee2 = Employee.builder()
-                .name("name")
+                .name("trainingName")
                 .employeeId(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120003"))
                 .surname("surname")
                 .build();
@@ -67,7 +67,7 @@ public class EmployeeServiceTest {
         //then
 
         assertEquals(2,employeeDTOSet.size());
-        assertEquals("name",EmployeeDTO.name());
+        assertEquals("trainingName",EmployeeDTO.name());
         assertEquals("surname",EmployeeDTO.surname());
         assertEquals(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120003"),EmployeeDTO.uuid());
 
