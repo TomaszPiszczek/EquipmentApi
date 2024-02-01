@@ -3,6 +3,7 @@ package com.example.EquipmentApi.integrationTest;
 import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.user.User;
+import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
 import com.example.EquipmentApi.repository.user.EquipmentRepository;
@@ -34,6 +35,8 @@ public class EmployeeServiceTest {
     EquipmentRepository equipmentRepository;
     @Mock
     EmployeeTrainingRepository employeeTrainingRepository;
+    @Mock
+    EmployeeEquipmentRepository employeeEquipmentRepository;
     @Autowired
     UserRepository userRepository;
 
@@ -41,7 +44,7 @@ public class EmployeeServiceTest {
 
     @BeforeEach
     public void setUp(){
-        employeeService =  new EmployeeService(employeeRepository, employeeTrainingRepository,equipmentRepository);
+        employeeService =  new EmployeeService(employeeRepository, employeeTrainingRepository,equipmentRepository,employeeEquipmentRepository);
     }
 
     @Transactional
