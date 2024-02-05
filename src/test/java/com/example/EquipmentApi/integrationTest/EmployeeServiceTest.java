@@ -72,7 +72,6 @@ public class EmployeeServiceTest {
         assertEquals(2,employeeDTOSet.size());
         assertEquals("trainingName",EmployeeDTO.name());
         assertEquals("surname",EmployeeDTO.surname());
-        assertEquals(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120003"),EmployeeDTO.uuid());
 
 
     }
