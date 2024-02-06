@@ -39,26 +39,26 @@ public class EmployeeController {
     @PostMapping("/addEmployee")
     ResponseEntity<String> addEmployee(@AuthenticationPrincipal User user, String name,String surname){
         employeeService.addEmployee(user,name,surname);
-        return ResponseEntity.ok("Employee added");
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/removeEmployee")
     ResponseEntity<String> removeEmployee(@AuthenticationPrincipal User user, UUID employeeUUID){
         employeeService.removeEmployee(user,employeeUUID);
-        return ResponseEntity.ok("Employee removed");
+        return ResponseEntity.ok().build();
     }
     @PostMapping("/signEmployeeToTraining")
     public ResponseEntity<String> signEmployeeToTraining(@AuthenticationPrincipal User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 
         trainingService.signEmployeeToTraining(user,employeeUUID,trainingUUID,trainingDate,expireDate);
-        return ResponseEntity.ok("Employee signed to new training");
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/signEmployeesToTraining")
     public ResponseEntity<String> signEmployeesToTraining(@AuthenticationPrincipal User user, @RequestBody Set<UUID> employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate){
 
         trainingService.signEmployeesToTraining(user,employeeUUID,trainingUUID,trainingDate,expireDate);
-        return ResponseEntity.ok("Employee signed to new training");
+        return ResponseEntity.ok().build();
     }
 
 

@@ -26,13 +26,13 @@ public class EquipmentController {
     @PostMapping("/createEquipment")
     public ResponseEntity<String> createEquipment(byte[] image, BigDecimal price, String name, String description, LocalDateTime serviceDate, @AuthenticationPrincipal User user) {
         equipmentService.createEquipment(image, price, name, description,serviceDate ,user);
-        return ResponseEntity.ok("Equipment created");
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/removeEquipment")
     public ResponseEntity<String> removeEquipment(UUID equipmentUUID, @AuthenticationPrincipal User user) {
         equipmentService.removeEquipment(equipmentUUID, user);
-        return ResponseEntity.ok("Equipment deleted");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getEquipment")
@@ -44,7 +44,7 @@ public class EquipmentController {
     @PatchMapping("/changeDate")
     public ResponseEntity<String> changeDate(UUID equipmentUUID,LocalDateTime dateTime,@AuthenticationPrincipal User user) {
         equipmentService.changeDate(equipmentUUID,dateTime,user);
-        return ResponseEntity.ok("data changed");
+        return ResponseEntity.ok().build();
 
     }
 
@@ -57,14 +57,14 @@ public class EquipmentController {
     @PostMapping("/signEquipmentToEmployee")
     public ResponseEntity<String> signEmployeeToEquipment(@AuthenticationPrincipal User user, UUID employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
         equipmentService.signEmployeeEquipment(user, employeeUUID,equipmentUUID,assignDate);
-        return ResponseEntity.ok("Equipment signed to employee");
+        return ResponseEntity.ok().build();
 
     }
 
     @PostMapping("/signEquipmentToEmployees")
     public ResponseEntity<String> signEmployeesToEquipment(@AuthenticationPrincipal User user,@RequestBody Set<UUID> employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
         equipmentService.signEmployeesEquipment(user, employeeUUID,equipmentUUID,assignDate);
-        return ResponseEntity.ok("Equipment signed to employee");
+        return ResponseEntity.ok().build();
     }
 
 
@@ -75,19 +75,19 @@ public class EquipmentController {
 
         equipmentService.signEmployeesEquipments(user, request.getEmployeeUUID(), request.getEquipmentUUID(), request.getAssignDate());
 
-        return ResponseEntity.ok("Equipment signed to employee");
+        return ResponseEntity.ok().build();
     }
 
 
     @DeleteMapping("/removeEquipmentFromEmployee")
     public ResponseEntity<String> removeEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID) {
         equipmentService.removeEquipmentFromEmployee(user,employeeEquipmentUUID);
-        return ResponseEntity.ok("Equipment deleted from employee");
+        return ResponseEntity.ok().build();
         }
     @PatchMapping("/unSetEquipmentFromEmployee")
     public ResponseEntity<String> unSetEquipmentFromEmployee(@AuthenticationPrincipal User user, UUID employeeEquipmentUUID,UUID employeeUUID) {
         equipmentService.unSetEquipmentFromEmployee(user,employeeEquipmentUUID,employeeUUID) ;
-        return ResponseEntity.ok("Equipment un set from employee");
+        return ResponseEntity.ok().build();
     }
 
 }

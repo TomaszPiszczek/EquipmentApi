@@ -20,17 +20,17 @@ public class TrainingController {
     public ResponseEntity<String> createTraining(String name, String description,@AuthenticationPrincipal User user){
         trainingService.createTraining(name,description,user);
 
-     return ResponseEntity.ok("Training created");
+     return ResponseEntity.ok().build();
     }
     @DeleteMapping("/removeTrainingFromEmployee")
     public ResponseEntity<String> removeTrainingFromEmployee(UUID employeeTrainingUUID,@AuthenticationPrincipal User user){
         trainingService.removeTrainingFromEmployee(user,employeeTrainingUUID);
-        return ResponseEntity.ok("Training removed");
+        return ResponseEntity.ok().build();
     }
     @DeleteMapping("/removeTraining")
     public ResponseEntity<String> removeTraining(UUID trainingUUID,@AuthenticationPrincipal User user){
         trainingService.removeTraining(user,trainingUUID);
-        return ResponseEntity.ok("Training removed");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getTrainings")
