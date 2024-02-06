@@ -21,7 +21,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) ->  authorize.anyRequest().permitAll())
+                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("api/v1/auth/**", "/swagger-ui/**", "/v3/**", "/v3/api-docs").permitAll().anyRequest().authenticated())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -29,5 +29,4 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
 
         return http.build();
     }
-
 }
