@@ -1,11 +1,11 @@
 package com.example.EquipmentApi.service;
 
-import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import com.example.EquipmentApi.model.user.User;
+import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
@@ -13,46 +13,31 @@ import com.example.EquipmentApi.repository.user.EquipmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.EquipmentApi.dto.EmployeeDTO.calculateDaysToTraining;
-
 @Service
+@Slf4j
 @AllArgsConstructor
 public class EmployeeService {
    private final   EmployeeRepository employeeRepository;
    private final EmployeeTrainingRepository employeeTrainingRepository;
    private final EquipmentRepository equipmentRepository;
    private final EmployeeEquipmentRepository employeeEquipmentRepository;
+   private static final long NO_TRAINING_DAYS = -99999;
 
-    public Set<EmployeeDTO> getEmployeeDTO(User user) {
-        return employeeRepository.findEmployeesByUser(user)
-                .stream()
-                .map(employee -> {
-                    EmployeeTraining employeeTraining = employeeTrainingRepository.findFirstByEmployeeEmployeeIdOrderByTrainingExpireDateAsc(employee.getEmployeeId());
-                    long equipmentCount = equipmentRepository.countToolsForEmployee(employee.getEmployeeId());
 
-                    long daysToTraining;
-                    if(employeeTraining == null) {
-                         daysToTraining = -99999;
-                    }else{
-                         daysToTraining = calculateDaysToTraining(employeeTraining);
+    public Set<EmployeeProjection> getEmployeeDTO(User user) {
 
-                    }
-                    return EmployeeDTO.builder()
-                            .uuid(employee.getEmployeeId())
-                            .name(employee.getName())
-                            .surname(employee.getSurname())
-                            .daysToTraining(daysToTraining)
-                            .numberOfTools(equipmentCount)
-                            .build();
-                })
-                .collect(Collectors.toSet());
+
+
+
+       return employeeRepository.findEmployeesWithUserByUserId(user.getId());
+
+
     }
     public Set<EmployeeTrainingDTO> getEmployeeTrainingDTO(UUID uuid,User user) {
         Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(uuid,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));

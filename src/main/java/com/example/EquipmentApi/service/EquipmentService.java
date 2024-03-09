@@ -6,6 +6,7 @@ import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.user.Equipment;
 import com.example.EquipmentApi.model.user.User;
+import com.example.EquipmentApi.dto.projections.EquipmentProjection;
 import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.user.EquipmentRepository;
@@ -59,7 +60,7 @@ public class EquipmentService {
     }
 
     public Set<EquipmentDTO> getEquipment(User user) {
-        Set<Equipment> equipment = equipmentRepository.findAllByUser(user);
+        Set<EquipmentProjection> equipment = equipmentRepository.findAllByUser(user);
          return equipment.stream().map(
                 equipment1 ->
                         EquipmentDTO.builder()
@@ -73,7 +74,10 @@ public class EquipmentService {
                 ).collect(Collectors.toSet());
     }
     public List<EmployeeEquipmentDTO> getEmployeeEquipment(User user, UUID employeeUUID) {
+
         return employeeEquipmentRepository.getEmployeeEquipmentDTOList(employeeUUID,user.getId());
+
+
     }
 
 

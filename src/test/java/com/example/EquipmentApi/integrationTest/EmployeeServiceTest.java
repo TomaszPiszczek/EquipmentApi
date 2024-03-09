@@ -1,6 +1,7 @@
 package com.example.EquipmentApi.integrationTest;
 
 import com.example.EquipmentApi.dto.EmployeeDTO;
+import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.user.User;
 import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
@@ -18,6 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Set;
@@ -51,27 +54,24 @@ public class EmployeeServiceTest {
     @Test
     public void getEmployeeDTOShouldReturnDtoTest(){
         //given
-        Employee employee1 = Employee.builder()
-                .name("trainingName")
-                .employeeId(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120002"))
-                .surname("surname")
-                .build();
-        Employee employee2 = Employee.builder()
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        Map<String,String> = map,
+        EmployeeProjection employee2 =(EmployeeProjection) Employee.builder()
                 .name("trainingName")
                 .employeeId(UUID.fromString("71f0ecdc-a0de-11ee-8c90-0242ac120003"))
                 .surname("surname")
                 .build();
         User user = User.builder().build();
         //when
-        when(employeeRepository.findEmployeesByUser(user)).thenReturn(Set.of(employee1,employee2));
-        Set<EmployeeDTO> employeeDTOSet = employeeService.getEmployeeDTO(user);
-        EmployeeDTO EmployeeDTO = employeeDTOSet.iterator().next();
+        when(employeeRepository.findEmployeesWithUserByUserId(user.getId())).thenReturn(Set.of(employee1,employee2));
+        Set<EmployeeProjection> employeeDTOSet = employeeService.getEmployeeDTO(user);
+        EmployeeProjection EmployeeDTO = employeeDTOSet.iterator().next();
 
         //then
 
         assertEquals(2,employeeDTOSet.size());
-        assertEquals("trainingName",EmployeeDTO.name());
-        assertEquals("surname",EmployeeDTO.surname());
+        assertEquals("trainingName",EmployeeDTO.getName());
+        assertEquals("surname",EmployeeDTO.getSurname());
 
 
     }

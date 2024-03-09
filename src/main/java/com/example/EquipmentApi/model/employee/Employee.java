@@ -29,14 +29,14 @@ public class Employee {
     @NonNull
     private String surname;
 
-    @ManyToOne()
+    @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Equipment> tools;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Training> trainings;
 
 
