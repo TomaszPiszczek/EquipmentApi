@@ -19,16 +19,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> handleValidationExceptions(ConstraintViolationException ex) {
         ExceptionResponse response = new ExceptionResponse();
-        StringBuilder errorMessage = new StringBuilder();
-
-        ex.getConstraintViolations().forEach((violation) -> {
-            String fieldName = violation.getPropertyPath().toString();
-            String violationMessage = violation.getMessage();
-            errorMessage.append(fieldName).append(": ").append(violationMessage).append("; ");
-        });
 
         response.setErrorCode("BAD_REQUEST");
-        response.setErrorMessage(errorMessage.toString());
+        response.setErrorMessage(ex.toString());
 
         return ResponseEntity.badRequest().body(response);
     }

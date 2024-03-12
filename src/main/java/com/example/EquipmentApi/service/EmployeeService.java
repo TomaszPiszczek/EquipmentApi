@@ -78,6 +78,7 @@ public class EmployeeService {
         Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(empoyeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
         List<EmployeeEquipment> employeeEquipment =   employeeEquipmentRepository.findEmployeeEquipmentByEmployee(employee).orElseThrow(() -> new EntityNotFoundException("relation not found"));
         List<EmployeeTraining> employeeTraining = employeeTrainingRepository.findEmployeeTrainingByEmployee(employee);
+        employee.setUser(null);
         employeeEquipmentRepository.deleteAll(employeeEquipment);
         employeeTrainingRepository.deleteAll(employeeTraining);
         employeeRepository.delete(employee);
