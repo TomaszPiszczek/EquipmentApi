@@ -1,22 +1,24 @@
 package com.example.EquipmentApi.service;
 
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
+import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.employee.EmployeeTraining;
 import com.example.EquipmentApi.model.user.User;
-import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.repository.employee.EmployeeEquipmentRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.repository.employee.EmployeeTrainingRepository;
-import com.example.EquipmentApi.repository.user.EquipmentRepository;
+import com.example.EquipmentApi.repository.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +27,8 @@ import java.util.stream.Collectors;
 public class EmployeeService {
    private final   EmployeeRepository employeeRepository;
    private final EmployeeTrainingRepository employeeTrainingRepository;
-   private final EquipmentRepository equipmentRepository;
+   private final UserRepository userRepository;
    private final EmployeeEquipmentRepository employeeEquipmentRepository;
-   private static final long NO_TRAINING_DAYS = -99999;
 
 
     public Set<EmployeeProjection> getEmployeeDTO(User user) {
@@ -62,6 +63,7 @@ public class EmployeeService {
 
     @Transactional
     public void addEmployee(User user, String name, String surname) {
+         user = userRepository.findById(user.getId()).orElseThrow(()->new EntityNotFoundException("User not found"));
         Employee employee = Employee.builder()
                 .surname(surname)
                 .name(name)
