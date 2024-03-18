@@ -1,9 +1,10 @@
 package com.example.EquipmentApi.contoller;
 
+import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
+import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.user.User;
-import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.repository.employee.EmployeeRepository;
 import com.example.EquipmentApi.service.EmployeeService;
 import com.example.EquipmentApi.service.TrainingService;
@@ -24,17 +25,18 @@ public class EmployeeController {
     EmployeeRepository employeeRepository;
     TrainingService trainingService;
     @GetMapping("/getEmployees")
-    ResponseEntity<Set<EmployeeProjection>> getEmployees(@AuthenticationPrincipal User user){
-        return ResponseEntity.ok(employeeService.getEmployeeDTO(user));
+    ResponseEntity<Set<EmployeeDTO>> getEmployees(@AuthenticationPrincipal User user){
+        ResponseEntity<Set<EmployeeDTO>> res =   ResponseEntity.ok(employeeService.getEmployeesDTO(user));
+        return res;
     }
 
 
     @GetMapping("/getEmployee")
-    ResponseEntity<Employee> getEmployee(@AuthenticationPrincipal User user, UUID employeeUUID){
-        return ResponseEntity.ok(employeeService.getEmployee(user,employeeUUID));
+    public ResponseEntity<EmployeeDTO> getEmployee(@AuthenticationPrincipal User user, UUID employeeUUID){
+        return ResponseEntity.ok(employeeService.getEmployee(employeeUUID));
     }
     @GetMapping("/getEmployeeTrainings")
-    ResponseEntity<Set<EmployeeTrainingDTO>> getEmployeeService(@AuthenticationPrincipal User user, UUID EmployeeUUID) {
+    public ResponseEntity<Set<EmployeeTrainingDTO>> getEmployeeService(@AuthenticationPrincipal User user, UUID EmployeeUUID) {
         return ResponseEntity.ok(employeeService.getEmployeeTrainingDTO(EmployeeUUID,user));
     }
     @PostMapping("/addEmployee")

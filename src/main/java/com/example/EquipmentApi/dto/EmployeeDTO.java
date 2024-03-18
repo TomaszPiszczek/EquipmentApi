@@ -15,12 +15,4 @@ public record EmployeeDTO(
         long daysToTraining,
         long numberOfTools
 ) {
-
-    public static long calculateDaysToTraining(EmployeeTraining employeeTraining) {
-        LocalDateTime trainingExpireDate = employeeTraining.getTrainingExpireDate();
-        LocalDateTime currentDate = LocalDateTime.now();
-        return java.time.temporal.ChronoUnit.DAYS.between(currentDate, trainingExpireDate);
-    }
-
-
 }

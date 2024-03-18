@@ -1,6 +1,7 @@
 package com.example.EquipmentApi.model.user;
 
 import com.example.EquipmentApi.model.employee.Employee;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "equipment")
 public class Equipment {
     @Id
@@ -37,7 +39,7 @@ public class Equipment {
     private byte[] imageData;
 
     @ManyToMany(
-            cascade = {CascadeType.MERGE,CascadeType.MERGE}
+            cascade = {CascadeType.MERGE,CascadeType.MERGE},fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "employee_equipment",
@@ -46,7 +48,7 @@ public class Equipment {
     )
     private Set<Employee> employees;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

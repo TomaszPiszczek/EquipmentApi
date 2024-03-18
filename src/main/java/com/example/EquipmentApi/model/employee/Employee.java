@@ -3,6 +3,7 @@ package com.example.EquipmentApi.model.employee;
 import com.example.EquipmentApi.model.user.Equipment;
 import com.example.EquipmentApi.model.user.Training;
 import com.example.EquipmentApi.model.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "employee")
 public class Employee {
     @Id
@@ -29,14 +31,27 @@ public class Employee {
     @NonNull
     private String surname;
 
-    @ManyToOne( cascade = CascadeType.ALL)
+    @ManyToOne( cascade = {CascadeType.MERGE,CascadeType.MERGE},fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(
+            cascade = {CascadeType.MERGE,CascadeType.MERGE},fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "employee_equipment",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id")
+    )
     private Set<Equipment> tools;
-
-    @ManyToMany(mappedBy = "employees", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(
+            cascade = {CascadeType.MERGE,CascadeType.MERGE},fetch = FetchType.LAZY
+    )
+    @JoinTable(
+            name = "employee_training",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "training_id")
+    )
     private Set<Training> trainings;
 
 

@@ -1,7 +1,7 @@
 package com.example.EquipmentApi.service;
 
+import com.example.EquipmentApi.dto.EmployeeDTO;
 import com.example.EquipmentApi.dto.EmployeeTrainingDTO;
-import com.example.EquipmentApi.dto.projections.EmployeeProjection;
 import com.example.EquipmentApi.model.employee.Employee;
 import com.example.EquipmentApi.model.employee.EmployeeEquipment;
 import com.example.EquipmentApi.model.employee.EmployeeTraining;
@@ -30,18 +30,19 @@ public class EmployeeService {
    private final UserRepository userRepository;
    private final EmployeeEquipmentRepository employeeEquipmentRepository;
 
-
-    public Set<EmployeeProjection> getEmployeeDTO(User user) {
-
-
-
-
-       return employeeRepository.findEmployeesWithUserByUserId(user.getId());
+@Transactional
+public Set<EmployeeDTO> getEmployeesDTO(User user) {
+    return employeeRepository.findEmployeesByUserId(user.getId());
+}
 
 
-    }
+
+
+
+
+    @Transactional
     public Set<EmployeeTrainingDTO> getEmployeeTrainingDTO(UUID uuid,User user) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(uuid,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+       Employee employee = employeeRepository.findEmployeeByEmployeeId(uuid).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
 
         Set<EmployeeTraining> employeeTrainingList = employeeTrainingRepository.getEmployeeTrainingByEmployee(employee);
         return employeeTrainingList
@@ -71,13 +72,21 @@ public class EmployeeService {
                 .build();
         employeeRepository.save(employee);
     }
+    @Transactional
+    public EmployeeDTO getEmployee(UUID employeeUUID) {
+       Employee employee =  employeeRepository.findEmployeeByEmployeeId(employeeUUID)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+       EmployeeDTO employeeDTO = EmployeeDTO.builder()
+               .uuid(employee.getEmployeeId())
+               .name(employee.getName())
+               .surname(employee.getSurname())
+               .build();
+       return employeeDTO;
 
-    public Employee getEmployee(User user, UUID employeeUUID) {
-        return employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
     }
-
+    @Transactional
     public void removeEmployee(User user, UUID empoyeeUUID) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(empoyeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        Employee employee = employeeRepository.findEmployeeByEmployeeId(empoyeeUUID).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
         List<EmployeeEquipment> employeeEquipment =   employeeEquipmentRepository.findEmployeeEquipmentByEmployee(employee).orElseThrow(() -> new EntityNotFoundException("relation not found"));
         List<EmployeeTraining> employeeTraining = employeeTrainingRepository.findEmployeeTrainingByEmployee(employee);
         employee.setUser(null);

@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeTrainingRepository extends JpaRepository<EmployeeTraining,UUID > {
+    @Query("SELECT et FROM EmployeeTraining et JOIN FETCH et.employee e WHERE e = :employee")
     Set<EmployeeTraining> getEmployeeTrainingByEmployee(Employee employee);
-    EmployeeTraining findFirstByEmployeeEmployeeIdOrderByTrainingExpireDateAsc(UUID employeeId);
     Optional<EmployeeTraining> findEmployeeTrainingByEmployeeTrainingId(UUID employeeTrainingUUID);
     List<EmployeeTraining> findEmployeeTrainingByEmployee(Employee employee);
 

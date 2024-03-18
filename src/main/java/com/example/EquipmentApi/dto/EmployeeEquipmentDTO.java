@@ -1,15 +1,13 @@
 package com.example.EquipmentApi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 //Cannot create record because intellij doesnt recognize constructor in EmployeeEquipmentRepository class
-@Data
+@Getter
+@Setter
 @Builder
 
 public class EmployeeEquipmentDTO {

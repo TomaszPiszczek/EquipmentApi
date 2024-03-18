@@ -2,7 +2,8 @@ package com.example.EquipmentApi.auth;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(force = true)

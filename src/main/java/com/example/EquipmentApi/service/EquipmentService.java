@@ -90,7 +90,7 @@ public class EquipmentService {
 
     @Transactional
     public void unSetEquipmentFromEmployee(User user, UUID employeeEquipmentUUID, UUID employeeUUID) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeUUID).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
         EmployeeEquipment employeeEquipment = employeeEquipmentRepository.findEmployeeEquipmentByAssignIdAndEmployee(employeeEquipmentUUID,employee).orElseThrow(() -> new EntityNotFoundException("Assign not found"));
         employeeEquipment.setInUse(false);
 
@@ -100,7 +100,7 @@ public class EquipmentService {
 
     @Transactional
     public void signEmployeeEquipment(User user, UUID employeeUUID, UUID equipmentUUID, LocalDateTime assignDate) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found") );
+        Employee employee = employeeRepository.findEmployeeByEmployeeId(employeeUUID).orElseThrow(() -> new EntityNotFoundException("Employee not found") );
         Equipment equipment = equipmentRepository.findEquipmentByEquipmentIdAndUser(equipmentUUID,user).orElseThrow(() -> new EntityNotFoundException("Equipment not found"));
 
         EmployeeEquipment employeeEquipment = EmployeeEquipment.builder()

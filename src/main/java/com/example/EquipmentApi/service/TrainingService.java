@@ -37,7 +37,7 @@ public class TrainingService {
 
     @Transactional
     public void signEmployeeToTraining(User user,UUID employeeUUID, UUID trainingUUID, LocalDateTime trainingDate, LocalDateTime expireDate) {
-        Employee employee = employeeRepository.findEmployeeByEmployeeIdAndUser(employeeUUID,user).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        Employee employee =  employeeRepository.findEmployeeByEmployeeId(employeeUUID).orElseThrow(() -> new EntityNotFoundException("Employee not found"));
         Training training = trainingRepository.findTrainingByTrainingIdAndUser(trainingUUID,user).orElseThrow(() -> new EntityNotFoundException("Training not found"));
 
 

@@ -12,7 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 
-@Data
+@Getter
+@Setter
 @Table(name = "training")
 public class Training {
     @Id

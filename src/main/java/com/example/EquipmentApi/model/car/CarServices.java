@@ -2,10 +2,7 @@ package com.example.EquipmentApi.model.car;
 
 import com.example.EquipmentApi.model.car.Car;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,7 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Table(name = "car_services")
 public class CarServices {
     @Id
