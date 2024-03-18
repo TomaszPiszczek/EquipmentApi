@@ -11,8 +11,6 @@ import java.util.UUID;
 public record EmployeeDTO(
         UUID uuid,
         String name,
-        String surname,
-        long daysToTraining,
-        long numberOfTools
+        String surname
 ) {
 }
